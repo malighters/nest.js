@@ -8,7 +8,7 @@ services:
     depends_on:
       - postgres
     environment:
-      DATABASE_URL: postgres://user:password@postgres:5432/db
+      DATABASE_URL: postgres://user:password@postgres:5432/pig_app
       NODE_ENV: development
       PORT: 3000
     ports:
@@ -17,9 +17,9 @@ services:
   postgres:
     image: postgres:15-alpine
     ports:
-      - "5432:5432"
+      - "6543:5432"
     environment:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
-      POSTGRES_DB: db
+      POSTGRES_DB: pig_app
     

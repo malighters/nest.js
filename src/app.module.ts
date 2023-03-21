@@ -2,6 +2,10 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { SequelizeModule } from '@nestjs/sequelize';
+import { BreedModule } from './breed/breed.module';
+import { PigModule } from './pig/pig.module';
+import { Breed } from './breed/breed.model';
+import { Pig } from './pig/pig.model';
 
 @Module({
   imports: [
@@ -11,9 +15,12 @@ import { SequelizeModule } from '@nestjs/sequelize';
       port: 5432,
       username: 'user',
       password: 'password',
-      database: 'db',
-      models: [],
+      database: 'pig_app',
+      autoLoadModels: true,
+      models: [Breed, Pig],
     }),
+    BreedModule,
+    PigModule,
   ],
   controllers: [AppController],
   providers: [AppService],
