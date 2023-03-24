@@ -22,4 +22,6 @@ services:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
       POSTGRES_DB: pig_app
+    volumes:
+      - "./pig_app:/var/lib/postgresql/data"
     

@@ -2,6 +2,7 @@ import {
   BelongsTo,
   Column,
   DataType,
+  ForeignKey,
   Model,
   Table,
 } from 'sequelize-typescript';
@@ -34,6 +35,12 @@ export class Pig extends Model<Pig, IPig> {
     type: DataType.STRING,
   })
   note: string;
+
+  @ForeignKey(() => Breed)
+  @Column({
+    type: DataType.INTEGER,
+  })
+  breedId: number;
 
   @BelongsTo(() => Breed)
   breed: Breed;

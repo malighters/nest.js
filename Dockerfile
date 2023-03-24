@@ -1,6 +1,6 @@
 FROM node:18-alpine
 
-WORKDIR /malighters/src/app
+WORKDIR /usr/src/app
 
 # Install app dependencies
 # A wildcard is used to ensure both package.json AND package-lock.json are copied
