@@ -14,7 +14,7 @@ import { Pig } from './pig/pig.model';
       host: 'localhost',
       port: 5432,
       username: 'postgres',
-      password: '',
+      password: 'malighters',
       database: 'pig_app',
       autoLoadModels: true,
       models: [Breed, Pig],

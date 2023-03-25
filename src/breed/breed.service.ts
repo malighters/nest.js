@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Sequelize } from 'sequelize-typescript';
 import { Breed } from './breed.model';
@@ -13,25 +13,34 @@ export class BreedService {
   ) {}
 
   async createBreed(dto: createBreedDto) {
+    if (!dto.name || !dto.direction) {
+      throw new HttpException(
+        'Bad request: invalid data',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
     const breed = this.BreedRepository.create(dto);
     return breed;
   }
 
   async getAllBreeds() {
-    const breeds = this.BreedRepository.findAll();
+    const breeds = this.BreedRepository.findAll({ include: { all: true } });
     return breeds;
   }
 
   async getBreedById(id: number) {
-    const breed = this.BreedRepository.findByPk(id);
+    const breed = this.BreedRepository.findByPk(id, { include: { all: true } });
     if (!breed) {
-      return 'No such breed';
+      throw new HttpException('Not found breed', HttpStatus.NOT_FOUND);
     }
     return breed;
   }
 
-  async updateBreed(dto: updateBreedDto, id: number) {
-    const updatedBreed: Breed = await this.BreedRepository.findByPk(id);
+  async updateBreed(id: number, dto: updateBreedDto) {
+    const updatedBreed = await this.BreedRepository.findByPk(id);
+    if (!updatedBreed) {
+      throw new HttpException('Not found breed', HttpStatus.NOT_FOUND);
+    }
     updatedBreed.name = dto.name || updatedBreed.name;
     updatedBreed.direction = dto.direction || updatedBreed.direction;
     return updatedBreed.save();
@@ -39,6 +48,9 @@ export class BreedService {
 
   async deleteBreed(id: number) {
     const deletedBreed = await this.BreedRepository.findByPk(id);
+    if (!deletedBreed) {
+      throw new HttpException('Not found breed', HttpStatus.NOT_FOUND);
+    }
     await deletedBreed.destroy();
     return deletedBreed;
   }
