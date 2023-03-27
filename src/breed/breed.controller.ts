@@ -11,7 +11,7 @@ import { BreedService } from './breed.service';
 import { createBreedDto } from './dto/create-breed.dto';
 import { updateBreedDto } from './dto/update-breed.dto';
 
-@Controller('breeds')
+@Controller('api/breeds')
 export class BreedController {
   constructor(private breedService: BreedService) {}
 

@@ -11,7 +11,7 @@ import { createPigDto } from './dto/create-pig.dto';
 import { updatePigDto } from './dto/update-pig.dto';
 import { PigService } from './pig.service';
 
-@Controller('pigs')
+@Controller('api/pigs')
 export class PigController {
   constructor(private pigService: PigService) {}
 
