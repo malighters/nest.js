@@ -6,6 +6,9 @@ import { BreedModule } from './breed/breed.module';
 import { PigModule } from './pig/pig.module';
 import { Breed } from './breed/breed.model';
 import { Pig } from './pig/pig.model';
+import { InjectionModule } from './injection/injection.module';
+import { BuildingModule } from './building/building.module';
+import { MedicineModule } from './medicine/medicine.module';
 
 @Module({
   imports: [
@@ -24,6 +27,9 @@ import { Pig } from './pig/pig.model';
     }),
     BreedModule,
     PigModule,
+    InjectionModule,
+    BuildingModule,
+    MedicineModule,
   ],
   controllers: [AppController],
   providers: [AppService],

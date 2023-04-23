@@ -3,9 +3,12 @@ import {
   Column,
   DataType,
   ForeignKey,
+  HasMany,
   Model,
   Table,
 } from 'sequelize-typescript';
+import { Building } from 'src/building/entities/building.entity';
+import { Injection } from 'src/injection/entities/injection.entity';
 import { Breed } from '../breed/breed.model';
 import { IPig } from './pig.interface';
 
@@ -44,4 +47,16 @@ export class Pig extends Model<Pig, IPig> {
 
   @BelongsTo(() => Breed)
   breed: Breed;
+
+  @ForeignKey(() => Building)
+  @Column({
+    type: DataType.INTEGER,
+  })
+  buildingId: number;
+
+  @BelongsTo(() => Building)
+  building: Building;
+
+  @HasMany(() => Injection)
+  injections: Injection[];
 }
