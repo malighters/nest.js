@@ -1,1 +1,3 @@
-export class CreateBuildingDto {}
+export class CreateBuildingDto {
+  readonly name: string;
+}

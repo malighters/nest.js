@@ -1,1 +1,4 @@
-export class CreateMedicineDto {}
+export class CreateMedicineDto {
+  readonly name: string;
+  readonly description: string;
+}

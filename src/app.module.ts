@@ -9,6 +9,9 @@ import { Pig } from './pig/pig.model';
 import { InjectionModule } from './injection/injection.module';
 import { BuildingModule } from './building/building.module';
 import { MedicineModule } from './medicine/medicine.module';
+import { Building } from './building/entities/building.entity';
+import { Injection } from './injection/entities/injection.entity';
+import { Medicine } from './medicine/entities/medicine.entity';
 
 @Module({
   imports: [
@@ -20,7 +23,7 @@ import { MedicineModule } from './medicine/medicine.module';
       password: 'malighters',
       database: 'pig_app',
       autoLoadModels: true,
-      models: [Breed, Pig],
+      models: [Breed, Pig, Building, Injection, Medicine],
       dialectOptions: {
         ssl: false,
       },

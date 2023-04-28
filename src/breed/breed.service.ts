@@ -29,7 +29,7 @@ export class BreedService {
   }
 
   async getBreedById(id: number) {
-    const breed = this.BreedRepository.findByPk(id, { include: { all: true } });
+    const breed = this.BreedRepository.findByPk(id);
     if (!breed) {
       throw new HttpException('Not found breed', HttpStatus.NOT_FOUND);
     }

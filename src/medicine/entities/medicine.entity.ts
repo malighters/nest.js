@@ -1,9 +1,10 @@
 import { Column, DataType, HasMany, Model, Table } from 'sequelize-typescript';
 
 import { Injection } from 'src/injection/entities/injection.entity';
+import { IMedicine } from '../medicine.interface';
 
 @Table
-export class Medicine extends Model {
+export class Medicine extends Model<Medicine, IMedicine> {
   @Column({
     type: DataType.INTEGER,
     unique: true,

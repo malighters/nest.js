@@ -22,7 +22,7 @@ export class BreedController {
 
   @Get(':id')
   getBreedById(@Param('id') id) {
-    return this.breedService.getBreedById(id);
+    return this.breedService.getBreedById(+id);
   }
 
   @Post()
@@ -32,11 +32,11 @@ export class BreedController {
 
   @Patch(':id')
   update(@Param('id') id: number, @Body() breedDto: updateBreedDto) {
-    return this.breedService.updateBreed(id, breedDto);
+    return this.breedService.updateBreed(+id, breedDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: number) {
-    return this.breedService.deleteBreed(id);
+    return this.breedService.deleteBreed(+id);
   }
 }

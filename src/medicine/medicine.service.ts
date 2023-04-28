@@ -1,26 +1,61 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/sequelize';
+import { Sequelize } from 'sequelize-typescript';
 import { CreateMedicineDto } from './dto/create-medicine.dto';
 import { UpdateMedicineDto } from './dto/update-medicine.dto';
+import { Medicine } from './entities/medicine.entity';
 
 @Injectable()
 export class MedicineService {
-  create(createMedicineDto: CreateMedicineDto) {
-    return 'This action adds a new medicine';
+  constructor(
+    private sequelize: Sequelize,
+    @InjectModel(Medicine) private MedicineRepository: typeof Medicine,
+  ) {}
+
+  async create(createMedicineDto: CreateMedicineDto) {
+    if (!createMedicineDto.name || !createMedicineDto.description) {
+      throw new HttpException(
+        'Bad request: invalid data',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+    const medicine = await this.MedicineRepository.create(createMedicineDto);
+    return medicine;
   }
 
-  findAll() {
-    return `This action returns all medicine`;
+  async findAll() {
+    const medicines = await this.MedicineRepository.findAll({
+      include: { all: true },
+    });
+    return medicines;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} medicine`;
+  async findOne(id: number) {
+    const medicine = await this.MedicineRepository.findByPk(id);
+
+    if (!medicine) {
+      throw new HttpException('Not found medicine', HttpStatus.NOT_FOUND);
+    }
+
+    return medicine;
   }
 
-  update(id: number, updateMedicineDto: UpdateMedicineDto) {
-    return `This action updates a #${id} medicine`;
+  async update(id: number, updateMedicineDto: UpdateMedicineDto) {
+    const updateBreed = await this.MedicineRepository.findByPk(id);
+    if (!updateBreed) {
+      throw new HttpException('Not found medicine', HttpStatus.NOT_FOUND);
+    }
+    updateBreed.name = updateMedicineDto.name || updateBreed.name;
+    updateBreed.description =
+      updateMedicineDto.description || updateBreed.description;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} medicine`;
+  async remove(id: number) {
+    const deletedMedicine = await this.MedicineRepository.findByPk(id);
+    if (!deletedMedicine) {
+      throw new HttpException('Not found medicine', HttpStatus.NOT_FOUND);
+    }
+    await deletedMedicine.destroy();
+    return deletedMedicine;
   }
 }

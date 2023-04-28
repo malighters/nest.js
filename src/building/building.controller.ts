@@ -1,9 +1,17 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { BuildingService } from './building.service';
 import { CreateBuildingDto } from './dto/create-building.dto';
 import { UpdateBuildingDto } from './dto/update-building.dto';
 
-@Controller('building')
+@Controller('api/buildings')
 export class BuildingController {
   constructor(private readonly buildingService: BuildingService) {}
 
@@ -23,7 +31,10 @@ export class BuildingController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateBuildingDto: UpdateBuildingDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateBuildingDto: UpdateBuildingDto,
+  ) {
     return this.buildingService.update(+id, updateBuildingDto);
   }
 
