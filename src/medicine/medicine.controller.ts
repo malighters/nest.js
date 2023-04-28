@@ -11,7 +11,7 @@ import { MedicineService } from './medicine.service';
 import { CreateMedicineDto } from './dto/create-medicine.dto';
 import { UpdateMedicineDto } from './dto/update-medicine.dto';
 
-@Controller('medicine')
+@Controller('api/medicines')
 export class MedicineController {
   constructor(private readonly medicineService: MedicineService) {}
 

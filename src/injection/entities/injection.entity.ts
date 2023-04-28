@@ -26,7 +26,7 @@ export class Injection extends Model<Injection, IInjection> {
     type: DataType.DATEONLY,
     allowNull: false,
   })
-  injectiondate: Date;
+  injectionDate: Date;
 
   @Column({
     type: DataType.STRING,
@@ -46,8 +46,8 @@ export class Injection extends Model<Injection, IInjection> {
   @Column({
     type: DataType.INTEGER,
   })
-  breedId: number;
+  medicineId: number;
 
   @BelongsTo(() => Medicine)
-  breed: Medicine;
+  medicine: Medicine;
 }

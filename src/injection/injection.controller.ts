@@ -1,9 +1,17 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { InjectionService } from './injection.service';
 import { CreateInjectionDto } from './dto/create-injection.dto';
 import { UpdateInjectionDto } from './dto/update-injection.dto';
 
-@Controller('injection')
+@Controller('api/injections')
 export class InjectionController {
   constructor(private readonly injectionService: InjectionService) {}
 
@@ -23,7 +31,10 @@ export class InjectionController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateInjectionDto: UpdateInjectionDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateInjectionDto: UpdateInjectionDto,
+  ) {
     return this.injectionService.update(+id, updateInjectionDto);
   }
 

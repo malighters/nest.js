@@ -3,4 +3,5 @@ export class createPigDto {
   readonly gender: boolean;
   readonly note: string;
   readonly breedId: number;
+  readonly buildingId: number;
 }

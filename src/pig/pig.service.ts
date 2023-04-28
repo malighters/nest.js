@@ -4,12 +4,14 @@ import { createPigDto } from './dto/create-pig.dto';
 import { Pig } from './pig.model';
 import { Breed } from '../breed/breed.model';
 import { updatePigDto } from './dto/update-pig.dto';
+import { Building } from 'src/building/entities/building.entity';
 
 @Injectable()
 export class PigService {
   constructor(
-    @InjectModel(Pig) private pigRepository: typeof Pig,
-    @InjectModel(Breed) private breedRepository: typeof Breed,
+    @InjectModel(Pig) private PigRepository: typeof Pig,
+    @InjectModel(Breed) private BreedRepository: typeof Breed,
+    @InjectModel(Building) private BuildingRepository: typeof Building,
   ) {}
 
   async createPig(dto: createPigDto) {
@@ -19,24 +21,27 @@ export class PigService {
         HttpStatus.BAD_REQUEST,
       );
     }
-
-    const pig = await this.pigRepository.create(dto);
-    const breed = await this.breedRepository.findByPk(pig.breedId);
+    const breed = await this.BreedRepository.findByPk(dto.breedId);
     if (!breed) {
       throw new HttpException('Not found breed', HttpStatus.NOT_FOUND);
     }
+    const building = await this.BuildingRepository.findByPk(dto.buildingId);
+
+    if (!building) {
+      throw new HttpException('Not found building', HttpStatus.NOT_FOUND);
+    }
+    const pig = await this.PigRepository.create(dto);
+
     return pig;
   }
 
   async getAllPigs() {
-    const pigs = await this.pigRepository.findAll({ include: { all: true } });
+    const pigs = await this.PigRepository.findAll({ include: { all: true } });
     return pigs;
   }
 
   async getPigById(id: number) {
-    const pig = await this.pigRepository.findByPk(id, {
-      include: { all: true },
-    });
+    const pig = await this.PigRepository.findByPk(id);
     if (!pig) {
       throw new HttpException('Not found pig', HttpStatus.NOT_FOUND);
     }
@@ -44,10 +49,7 @@ export class PigService {
   }
 
   async updatePig(id: number, dto: updatePigDto) {
-    const updatedPig = await this.pigRepository.findByPk(id);
-    if (!updatedPig) {
-      throw new HttpException('Not found pig', HttpStatus.NOT_FOUND);
-    }
+    const updatedPig = await this.getPigById(id);
     updatedPig.gender = dto.gender || updatedPig.gender;
     updatedPig.birthdate = dto.birthdate || updatedPig.birthdate;
     updatedPig.note = dto.note || updatedPig.note;
@@ -55,10 +57,7 @@ export class PigService {
   }
 
   async deletePig(id: number) {
-    const deletedPig = await this.pigRepository.findByPk(id);
-    if (!deletedPig) {
-      throw new HttpException('Not found pig', HttpStatus.NOT_FOUND);
-    }
+    const deletedPig = await this.getPigById(id);
     await deletedPig.destroy();
     return deletedPig;
   }

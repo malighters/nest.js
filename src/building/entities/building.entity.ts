@@ -19,13 +19,6 @@ export class Building extends Model<Building, IBuilding> {
   })
   name: string;
 
-  @Column({
-    type: DataType.INTEGER,
-    allowNull: false,
-    defaultValue: 0,
-  })
-  quantity: number;
-
   @HasMany(() => Pig)
   pigs: Pig[];
 }

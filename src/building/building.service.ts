@@ -41,22 +41,14 @@ export class BuildingService {
   }
 
   async update(id: number, updateBuildingDto: UpdateBuildingDto) {
-    const updatedBuilding = await this.BuildingRepository.findByPk(id);
-
-    if (!updatedBuilding) {
-      throw new HttpException('Not found building', HttpStatus.NOT_FOUND);
-    }
-
+    const updatedBuilding = await this.findOne(id);
     updatedBuilding.name = updateBuildingDto.name || updatedBuilding.name;
 
     return updatedBuilding.save();
   }
 
   async remove(id: number) {
-    const deletedBuilding = await this.BuildingRepository.findByPk(id);
-    if (!deletedBuilding) {
-      throw new HttpException('Not found building', HttpStatus.NOT_FOUND);
-    }
+    const deletedBuilding = await this.findOne(id);
     await deletedBuilding.destroy();
     return deletedBuilding;
   }

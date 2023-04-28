@@ -41,20 +41,14 @@ export class MedicineService {
   }
 
   async update(id: number, updateMedicineDto: UpdateMedicineDto) {
-    const updateBreed = await this.MedicineRepository.findByPk(id);
-    if (!updateBreed) {
-      throw new HttpException('Not found medicine', HttpStatus.NOT_FOUND);
-    }
+    const updateBreed = await this.findOne(id);
     updateBreed.name = updateMedicineDto.name || updateBreed.name;
     updateBreed.description =
       updateMedicineDto.description || updateBreed.description;
   }
 
   async remove(id: number) {
-    const deletedMedicine = await this.MedicineRepository.findByPk(id);
-    if (!deletedMedicine) {
-      throw new HttpException('Not found medicine', HttpStatus.NOT_FOUND);
-    }
+    const deletedMedicine = await this.findOne(id);
     await deletedMedicine.destroy();
     return deletedMedicine;
   }

@@ -37,20 +37,14 @@ export class BreedService {
   }
 
   async updateBreed(id: number, dto: updateBreedDto) {
-    const updatedBreed = await this.BreedRepository.findByPk(id);
-    if (!updatedBreed) {
-      throw new HttpException('Not found breed', HttpStatus.NOT_FOUND);
-    }
+    const updatedBreed = await this.getBreedById(id);
     updatedBreed.name = dto.name || updatedBreed.name;
     updatedBreed.direction = dto.direction || updatedBreed.direction;
     return updatedBreed.save();
   }
 
   async deleteBreed(id: number) {
-    const deletedBreed = await this.BreedRepository.findByPk(id);
-    if (!deletedBreed) {
-      throw new HttpException('Not found breed', HttpStatus.NOT_FOUND);
-    }
+    const deletedBreed = await this.getBreedById(id);
     await deletedBreed.destroy();
     return deletedBreed;
   }

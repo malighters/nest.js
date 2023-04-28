@@ -23,6 +23,7 @@ import { Medicine } from './medicine/entities/medicine.entity';
       password: 'malighters',
       database: 'pig_app',
       autoLoadModels: true,
+      synchronize: true,
       models: [Breed, Pig, Building, Injection, Medicine],
       dialectOptions: {
         ssl: false,
