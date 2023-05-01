@@ -19,10 +19,13 @@ export class InjectionService {
   ) {}
 
   async create(createInjectionDto: CreateInjectionDto) {
+    const currentDate = new Date();
+    const injectionDate = new Date(createInjectionDto.injectionDate);
     if (
       !createInjectionDto.injectionDate ||
       !createInjectionDto.pigId ||
-      !createInjectionDto.medicineId
+      !createInjectionDto.medicineId ||
+      currentDate < injectionDate
     ) {
       throw new HttpException(
         'Bad request: invalid data',
@@ -66,11 +69,21 @@ export class InjectionService {
 
   async update(id: number, updateInjectionDto: UpdateInjectionDto) {
     const updatedInjection = await this.findOne(id);
+    if (updateInjectionDto.injectionDate) {
+      const currentDate = new Date();
+      const injectionDate = new Date(updateInjectionDto.injectionDate);
+      if (currentDate < injectionDate) {
+        throw new HttpException(
+          'Bad request: invalid injection date',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+    }
     updatedInjection.injectionDate =
       updateInjectionDto.injectionDate || updatedInjection.injectionDate;
     updatedInjection.note = updateInjectionDto.note || updatedInjection.note;
 
-    return updatedInjection;
+    return updatedInjection.save();
   }
 
   async remove(id: number) {

@@ -15,7 +15,14 @@ export class PigService {
   ) {}
 
   async createPig(dto: createPigDto) {
-    if (!dto.birthdate || !dto.breedId || !dto.gender) {
+    const currentDate = new Date();
+    const birthdate = new Date(dto.birthdate);
+    if (
+      !dto.birthdate ||
+      !dto.breedId ||
+      !dto.gender ||
+      birthdate > currentDate
+    ) {
       throw new HttpException(
         'Bad request: invalid data',
         HttpStatus.BAD_REQUEST,
@@ -52,6 +59,16 @@ export class PigService {
 
   async updatePig(id: number, dto: updatePigDto) {
     const updatedPig = await this.getPigById(id);
+    if (dto.birthdate) {
+      const currentDate = new Date();
+      const birthdate = new Date(dto.birthdate);
+      if (currentDate < birthdate) {
+        throw new HttpException(
+          'Bad request: invalid birthdate',
+          HttpStatus.BAD_REQUEST,
+        );
+      }
+    }
     updatedPig.gender = dto.gender || updatedPig.gender;
     updatedPig.birthdate = dto.birthdate || updatedPig.birthdate;
     updatedPig.note = dto.note || updatedPig.note;

@@ -54,7 +54,7 @@ export class MedicineService {
   }
 
   async update(id: number, updateMedicineDto: UpdateMedicineDto) {
-    const updateBreed = await this.findOne(id);
+    const updateMedicine = await this.findOne(id);
     const medicineExists = await this.MedicineRepository.findOne({
       where: { name: updateMedicineDto.name },
     });
@@ -64,9 +64,11 @@ export class MedicineService {
         HttpStatus.BAD_REQUEST,
       );
     }
-    updateBreed.name = updateMedicineDto.name || updateBreed.name;
-    updateBreed.description =
-      updateMedicineDto.description || updateBreed.description;
+    updateMedicine.name = updateMedicineDto.name || updateMedicine.name;
+    updateMedicine.description =
+      updateMedicineDto.description || updateMedicine.description;
+
+    return updateMedicine.save();
   }
 
   async remove(id: number) {
