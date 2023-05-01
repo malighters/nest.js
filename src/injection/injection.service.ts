@@ -19,13 +19,20 @@ export class InjectionService {
   ) {}
 
   async create(createInjectionDto: CreateInjectionDto) {
+    const pig = await this.PigRepository.findByPk(createInjectionDto.pigId);
+    if (!pig) {
+      throw new HttpException('Not found pig', HttpStatus.NOT_FOUND);
+    }
+
     const currentDate = new Date();
     const injectionDate = new Date(createInjectionDto.injectionDate);
+    const pigBirthDate = pig.birthdate;
     if (
       !createInjectionDto.injectionDate ||
       !createInjectionDto.pigId ||
       !createInjectionDto.medicineId ||
-      currentDate < injectionDate
+      currentDate < injectionDate ||
+      pigBirthDate > injectionDate
     ) {
       throw new HttpException(
         'Bad request: invalid data',
@@ -38,11 +45,6 @@ export class InjectionService {
     );
     if (!medicine) {
       throw new HttpException('Not found medicine', HttpStatus.NOT_FOUND);
-    }
-
-    const pig = await this.PigRepository.findByPk(createInjectionDto.pigId);
-    if (!pig) {
-      throw new HttpException('Not found pig', HttpStatus.NOT_FOUND);
     }
 
     const injection = await this.InjectionRepository.create(createInjectionDto);
@@ -69,10 +71,13 @@ export class InjectionService {
 
   async update(id: number, updateInjectionDto: UpdateInjectionDto) {
     const updatedInjection = await this.findOne(id);
+    const pigBirthDate = (
+      await this.PigRepository.findByPk(updateInjectionDto.pigId)
+    ).birthdate;
     if (updateInjectionDto.injectionDate) {
       const currentDate = new Date();
       const injectionDate = new Date(updateInjectionDto.injectionDate);
-      if (currentDate < injectionDate) {
+      if (currentDate < injectionDate || injectionDate < pigBirthDate) {
         throw new HttpException(
           'Bad request: invalid injection date',
           HttpStatus.BAD_REQUEST,
