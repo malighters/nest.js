@@ -19,6 +19,17 @@ export class BuildingService {
         HttpStatus.BAD_REQUEST,
       );
     }
+
+    const buildingExists = await this.BuildingRepository.findOne({
+      where: { name: createBuildingDto.name },
+    });
+    if (buildingExists) {
+      throw new HttpException(
+        'The field name must be unique',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
     const building = await this.BuildingRepository.create(createBuildingDto);
     return building;
   }
@@ -31,7 +42,9 @@ export class BuildingService {
   }
 
   async findOne(id: number) {
-    const building = await this.BuildingRepository.findByPk(id);
+    const building = await this.BuildingRepository.findByPk(id, {
+      include: { all: true },
+    });
 
     if (!building) {
       throw new HttpException('Not found building', HttpStatus.NOT_FOUND);
@@ -42,8 +55,16 @@ export class BuildingService {
 
   async update(id: number, updateBuildingDto: UpdateBuildingDto) {
     const updatedBuilding = await this.findOne(id);
+    const buildingExists = await this.BuildingRepository.findOne({
+      where: { name: updateBuildingDto.name },
+    });
+    if (buildingExists) {
+      throw new HttpException(
+        'The field name must be unique',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
     updatedBuilding.name = updateBuildingDto.name || updatedBuilding.name;
-
     return updatedBuilding.save();
   }
 

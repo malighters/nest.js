@@ -55,7 +55,9 @@ export class InjectionService {
   }
 
   async findOne(id: number) {
-    const injection = await this.InjectionRepository.findByPk(id);
+    const injection = await this.InjectionRepository.findByPk(id, {
+      include: { all: true },
+    });
     if (!injection) {
       throw new HttpException('Not found injection', HttpStatus.NOT_FOUND);
     }

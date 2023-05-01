@@ -19,6 +19,17 @@ export class MedicineService {
         HttpStatus.BAD_REQUEST,
       );
     }
+
+    const medicineExists = await this.MedicineRepository.findOne({
+      where: { name: createMedicineDto.name },
+    });
+    if (medicineExists) {
+      throw new HttpException(
+        'The field name must be unique',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
     const medicine = await this.MedicineRepository.create(createMedicineDto);
     return medicine;
   }
@@ -31,7 +42,9 @@ export class MedicineService {
   }
 
   async findOne(id: number) {
-    const medicine = await this.MedicineRepository.findByPk(id);
+    const medicine = await this.MedicineRepository.findByPk(id, {
+      include: { all: true },
+    });
 
     if (!medicine) {
       throw new HttpException('Not found medicine', HttpStatus.NOT_FOUND);
@@ -42,6 +55,15 @@ export class MedicineService {
 
   async update(id: number, updateMedicineDto: UpdateMedicineDto) {
     const updateBreed = await this.findOne(id);
+    const medicineExists = await this.MedicineRepository.findOne({
+      where: { name: updateMedicineDto.name },
+    });
+    if (medicineExists) {
+      throw new HttpException(
+        'The field name must be unique',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
     updateBreed.name = updateMedicineDto.name || updateBreed.name;
     updateBreed.description =
       updateMedicineDto.description || updateBreed.description;

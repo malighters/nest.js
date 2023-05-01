@@ -41,7 +41,9 @@ export class PigService {
   }
 
   async getPigById(id: number) {
-    const pig = await this.PigRepository.findByPk(id);
+    const pig = await this.PigRepository.findByPk(id, {
+      include: { all: true },
+    });
     if (!pig) {
       throw new HttpException('Not found pig', HttpStatus.NOT_FOUND);
     }
