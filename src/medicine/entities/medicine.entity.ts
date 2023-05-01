@@ -16,6 +16,7 @@ export class Medicine extends Model<Medicine, IMedicine> {
   @Column({
     type: DataType.STRING,
     allowNull: false,
+    unique: true,
   })
   name: string;
 

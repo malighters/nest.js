@@ -19,6 +19,17 @@ export class BreedService {
         HttpStatus.BAD_REQUEST,
       );
     }
+
+    const breedExists = await this.BreedRepository.findOne({
+      where: { name: dto.name },
+    });
+    if (breedExists) {
+      throw new HttpException(
+        'The field name must be unique',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
     const breed = this.BreedRepository.create(dto);
     return breed;
   }
@@ -29,7 +40,7 @@ export class BreedService {
   }
 
   async getBreedById(id: number) {
-    const breed = this.BreedRepository.findByPk(id);
+    const breed = await this.BreedRepository.findByPk(id);
     if (!breed) {
       throw new HttpException('Not found breed', HttpStatus.NOT_FOUND);
     }
@@ -38,6 +49,15 @@ export class BreedService {
 
   async updateBreed(id: number, dto: updateBreedDto) {
     const updatedBreed = await this.getBreedById(id);
+    const breedExists = await this.BreedRepository.findOne({
+      where: { name: dto.name },
+    });
+    if (breedExists) {
+      throw new HttpException(
+        'The field name must be unique',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
     updatedBreed.name = dto.name || updatedBreed.name;
     updatedBreed.direction = dto.direction || updatedBreed.direction;
     return updatedBreed.save();
