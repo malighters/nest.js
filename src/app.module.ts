@@ -12,28 +12,29 @@ import { MedicineModule } from './medicine/medicine.module';
 import { Building } from './building/entities/building.entity';
 import { Injection } from './injection/entities/injection.entity';
 import { Medicine } from './medicine/entities/medicine.entity';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [
     SequelizeModule.forRoot({
       dialect: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      username: 'postgres',
-      password: 'malighters',
-      database: 'pig_app',
+      uri:
+        process.env.DATABASE_URL ||
+        'postgres://postgres:malighters@localhost:5432/pig_app',
       autoLoadModels: true,
       synchronize: true,
+      ssl: false,
       models: [Breed, Pig, Building, Injection, Medicine],
-      dialectOptions: {
-        ssl: false,
-      },
     }),
     BreedModule,
     PigModule,
     InjectionModule,
     BuildingModule,
     MedicineModule,
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'client'),
+    }),
   ],
   controllers: [AppController],
   providers: [AppService],

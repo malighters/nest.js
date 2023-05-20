@@ -1,5 +1,5 @@
 import { Column, DataType, HasMany, Model, Table } from 'sequelize-typescript';
-import { Pig } from 'src/pig/pig.model';
+import { Pig } from '../../pig/pig.model';
 import { IBuilding } from '../building.interface';
 
 @Table

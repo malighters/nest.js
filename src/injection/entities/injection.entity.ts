@@ -7,8 +7,8 @@ import {
   ForeignKey,
 } from 'sequelize-typescript';
 
-import { Pig } from 'src/pig/pig.model';
-import { Medicine } from 'src/medicine/entities/medicine.entity';
+import { Pig } from '../../pig/pig.model';
+import { Medicine } from '../../medicine/entities/medicine.entity';
 
 import { IInjection } from '../injection.interface';
 

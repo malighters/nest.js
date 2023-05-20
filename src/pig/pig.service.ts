@@ -15,12 +15,14 @@ export class PigService {
   ) {}
 
   async createPig(dto: createPigDto) {
+    console.log(dto);
+
     const currentDate = new Date();
     const birthdate = new Date(dto.birthdate);
     if (
       !dto.birthdate ||
       !dto.breedId ||
-      !dto.gender ||
+      dto.gender === null ||
       birthdate > currentDate
     ) {
       throw new HttpException(

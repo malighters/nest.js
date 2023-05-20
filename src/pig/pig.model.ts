@@ -7,8 +7,8 @@ import {
   Model,
   Table,
 } from 'sequelize-typescript';
-import { Building } from 'src/building/entities/building.entity';
-import { Injection } from 'src/injection/entities/injection.entity';
+import { Building } from '../building/entities/building.entity';
+import { Injection } from '../injection/entities/injection.entity';
 import { Breed } from '../breed/breed.model';
 import { IPig } from './pig.interface';
 

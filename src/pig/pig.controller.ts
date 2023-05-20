@@ -22,7 +22,7 @@ export class PigController {
 
   @Get(':id')
   async getPigById(@Param('id') id) {
-    return await this.pigService.getPigById(id);
+    return await this.pigService.getPigById(+id);
   }
 
   @Post()
@@ -32,11 +32,11 @@ export class PigController {
 
   @Patch(':id')
   async updatePig(@Param('id') id, @Body() dto: updatePigDto) {
-    return await this.pigService.updatePig(id, dto);
+    return await this.pigService.updatePig(+id, dto);
   }
 
   @Delete(':id')
   async deletePig(@Param('id') id) {
-    return await this.pigService.deletePig(id);
+    return await this.pigService.deletePig(+id);
   }
 }

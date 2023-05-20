@@ -8,7 +8,7 @@ services:
     depends_on:
       - postgres
     environment:
-      DATABASE_URL: postgres://user:password@postgres:5432/pig_app
+      DATABASE_URL: postgres://postgres:postgres@postgres:5432/pig_app?sslmode=disable
       NODE_ENV: development
       PORT: 3000
     ports:
@@ -17,11 +17,12 @@ services:
   postgres:
     image: postgres:15-alpine
     ports:
-      - "6543:5432"
+      - "35000:5432"
     environment:
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: password
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
       POSTGRES_DB: pig_app
+      PGSSLMODE: no-verify
     volumes:
       - "./pig_app:/var/lib/postgresql/data"
     

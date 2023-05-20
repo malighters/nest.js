@@ -1,6 +1,6 @@
 import { Column, DataType, HasMany, Model, Table } from 'sequelize-typescript';
 
-import { Injection } from 'src/injection/entities/injection.entity';
+import { Injection } from '../../injection/entities/injection.entity';
 import { IMedicine } from '../medicine.interface';
 
 @Table
